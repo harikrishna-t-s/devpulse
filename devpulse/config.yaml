@@ -114,6 +114,12 @@ sources:
       url: "https://blog.trailofbits.com/feed/"
     - name: "Krebs on Security"
       url: "https://krebsonsecurity.com/feed/"
+    - name: "DevOps Cafe Podcast"
+      url: "https://feeds.simplecast.com/54nAGcIl"
+    - name: "Software Engineering Daily"
+      url: "https://softwareengineeringdaily.com/feed/podcast/"
+    - name: "Changelog"
+      url: "https://changelog.com/podcast/feed"
 
   scraping:
     - name: "GitHub Trending"

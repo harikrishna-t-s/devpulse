@@ -10,28 +10,37 @@ class Scorer:
 
     def calculate_score(self, article, topic=None):
         score = 0
-        text = (article['title'] + " " + article['content']).lower()
+        title = article.get('title', '').lower()
+        content = article.get('content', '').lower()
+        text = title + " " + content
         
-        # Keyword based scoring
+        # Mandatory Topic Match: If a topic is specified, it MUST be present.
+        if topic:
+            topic_lower = topic.lower()
+            if topic_lower not in text:
+                return 0 # Skip articles that don't mention the topic at all
+            
+            # Heavy weighting for the specific topic
+            title_topic_count = title.count(topic_lower)
+            content_topic_count = content.count(topic_lower)
+            score += (title_topic_count * 100) + (content_topic_count * 50)
+
+        # General Keyword based scoring (secondary to the topic)
         for kw, weight in self.weights.items():
-            if kw.lower() in text:
-                # Give more weight if keyword is in title
-                if kw.lower() in article['title'].lower():
-                    score += weight * 2
-                else:
-                    score += weight
+            kw_lower = kw.lower()
+            if kw_lower in text:
+                # Count occurrences
+                title_matches = title.count(kw_lower)
+                content_matches = content.count(kw_lower)
+                
+                # Title matches are weighted 3x
+                score += (title_matches * weight * 2)
+                # Content matches are weighted 1x
+                score += (content_matches * weight)
 
-        # Topic specific boost
-        if topic and topic.lower() in text:
-            score += 30
-
-        # Freshness boost (if published date is available)
+        # Freshness boost
         if article.get('published'):
-            # Basic freshness boost for now
             score += self.freshness_boost
-
-        # Reputation boost (placeholder for future implementation)
-        # score += source_reputation.get(article['source'], 0)
 
         return score
 
