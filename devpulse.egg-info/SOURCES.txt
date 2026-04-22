@@ -12,9 +12,12 @@ devpulse.egg-info/top_level.txt
 devpulse/cli/__init__.py
 devpulse/cli/main.py
 devpulse/core/__init__.py
+devpulse/core/container.py
 devpulse/core/fetcher.py
+devpulse/core/logging_config.py
 devpulse/core/scorer.py
 devpulse/core/storage.py
+devpulse/core/topic_filter.py
 devpulse/core/adapters/__init__.py
 devpulse/core/adapters/rss.py
 devpulse/core/nlp/__init__.py
