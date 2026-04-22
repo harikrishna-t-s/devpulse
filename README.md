@@ -17,7 +17,7 @@ A production-grade DevOps content aggregator with intelligent scoring and NLP-ba
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/devpulse.git
+git clone https://github.com/harikrishna-t-s/devpulse.git
 cd devpulse
 
 # Install in development mode
@@ -50,6 +50,9 @@ devpulse save <id>
 
 # Analyze article with NLP breakdown
 devpulse analyze <id>
+
+# Clear all articles from database
+devpulse clear
 
 # Show configuration paths
 devpulse config

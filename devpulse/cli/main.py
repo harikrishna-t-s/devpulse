@@ -205,6 +205,25 @@ def save(id):
         click.echo(f"Error: {e}")
 
 @main.command()
+@click.confirmation_option(prompt='Are you sure you want to clear all articles? This cannot be undone.')
+def clear():
+    """Clear all articles from the database.
+    
+    This command removes all articles from the database and resets
+    the full-text search index. Saved article bookmarks are preserved.
+    
+    Example:
+        $ devpulse clear
+    """
+    try:
+        container = get_container()
+        container.storage.clear_articles()
+        click.echo("All articles cleared from database.")
+    except Exception as e:
+        logger.error(f"Clear failed: {e}", exc_info=True)
+        click.echo(f"Error: {e}")
+
+@main.command()
 def config():
     """Show configuration details.
     

@@ -15,28 +15,28 @@ DevPulse follows clean architecture principles with clear separation of concerns
 └──────────────────────┬──────────────────────────────────────┘
                        │
 ┌──────────────────────▼──────────────────────────────────────┐
-│                   Dependency Injection                       │
-│                  (core/container.py)                         │
-└──────┬──────────────┬──────────────┬─────────────────────────┘
-       │              │              │
-┌──────▼──────┐ ┌────▼──────┐ ┌───▼────────┐
-│  Storage    │ │  Scorer   │ │  Fetcher   │
-│(storage.py) │ │(scorer.py)│ │(fetcher.py)│
-└─────────────┘ └───────────┘ └────────────┘
-       │              │              │
-       └──────────────┴──────────────┘
-                      │
-         ┌────────────▼────────────┐
-         │   Topic Filter          │
-         │ (topic_filter.py)       │
-         └─────────────────────────┘
-                      │
-         ┌────────────▼────────────┐
-         │   NLP Components        │
-         │ (nlp/engine.py)         │
-         │ (nlp/classifier.py)     │
-         │ (nlp/ner.py)            │
-         └─────────────────────────┘
+│                   Dependency Injection                      │
+│                  (core/container.py)                        │
+└──────────────┬──────────────┬──────────────┬────────────────┘
+               │              │              │
+        ┌──────▼──────┐ ┌────▼──────┐ ┌───▼────────┐
+        │  Storage    │ │  Scorer   │ │  Fetcher   │
+        │(storage.py) │ │(scorer.py)│ │(fetcher.py)│
+        └─────────────┘ └───────────┘ └────────────┘
+               │              │              │
+               └──────────────┴──────────────┘
+                              │
+                 ┌────────────▼────────────┐
+                 │   Topic Filter          │
+                 │ (topic_filter.py)       │
+                 └─────────────────────────┘
+                              │
+                 ┌────────────▼────────────┐
+                 │   NLP Components        │
+                 │ (nlp/engine.py)         │
+                 │ (nlp/classifier.py)     │
+                 │ (nlp/ner.py)            │
+                 └─────────────────────────┘
 ```
 
 ### Key Design Patterns
