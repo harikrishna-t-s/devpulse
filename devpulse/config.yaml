@@ -152,6 +152,31 @@ scoring:
     automation: 7
     gitops: 10
 
+nlp:
+  enabled: true
+  components:
+    tfidf:
+      enabled: true
+      weight: 0.3
+    cosine_similarity:
+      enabled: true
+      weight: 0.2
+    rake:
+      enabled: true
+      weight: 0.15
+    classifier:
+      enabled: true
+      weight: 0.2
+    ner:
+      enabled: true
+      weight: 0.15
+  settings:
+    max_content_length: 1000
+    use_ngrams: true
+    ngram_range: [2, 3]
+  model_path: "models"
+  corpus_path: "corpus"
+
 decay_days: 30
 freshness_boost: 20
 max_articles: 100

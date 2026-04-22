@@ -17,5 +17,9 @@ devpulse/core/scorer.py
 devpulse/core/storage.py
 devpulse/core/adapters/__init__.py
 devpulse/core/adapters/rss.py
+devpulse/core/nlp/__init__.py
+devpulse/core/nlp/classifier.py
+devpulse/core/nlp/engine.py
+devpulse/core/nlp/ner.py
 devpulse/utils/__init__.py
 devpulse/utils/networking.py

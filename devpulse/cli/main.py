@@ -5,6 +5,9 @@ from markdownify import markdownify as md
 from devpulse.core.fetcher import fetcher
 from devpulse.core.storage import storage
 from devpulse.config import config as cfg_obj
+from devpulse.core.nlp.engine import nlp_engine
+from devpulse.core.nlp.classifier import classifier
+from devpulse.core.nlp.ner import ner_engine
 import os
 
 @click.group()
@@ -131,6 +134,64 @@ def config():
     click.echo(f"Database path: {cfg_obj.db_path}")
     click.echo(f"Saved articles dir: {cfg_obj.save_dir}")
     click.echo("\nTo edit sources or weights, modify the config.yaml file.")
+
+@main.command()
+@click.option('--positive', help='File with positive samples (DevOps articles)')
+@click.option('--negative', help='File with negative samples (non-DevOps articles)')
+def train(positive, negative):
+    """Train the Naive Bayes classifier"""
+    if not positive or not negative:
+        click.echo("Both --positive and --negative files are required.")
+        return
+
+    try:
+        with open(positive, 'r', encoding='utf-8') as f:
+            positive_samples = [line.strip() for line in f if line.strip()]
+        with open(negative, 'r', encoding='utf-8') as f:
+            negative_samples = [line.strip() for line in f if line.strip()]
+
+        click.echo(f"Training with {len(positive_samples)} positive and {len(negative_samples)} negative samples...")
+        classifier.train(positive_samples, negative_samples)
+        click.echo("Classifier trained successfully.")
+    except Exception as e:
+        click.echo(f"Training failed: {e}")
+
+@main.command()
+@click.argument('id', type=int)
+def analyze(id):
+    """Analyze an article with NLP breakdown"""
+    art = storage.get_article(id)
+    if not art:
+        click.echo("Not found.")
+        return
+
+    text = f"{art['title']} {art['content']}"
+    click.echo(f"\nAnalyzing: {art['title']}")
+    click.echo("-" * 20)
+
+    # TF-IDF Score
+    tfidf_score = nlp_engine.compute_tfidf_score(text)
+    click.echo(f"TF-IDF Score: {tfidf_score:.2f}")
+
+    # Cosine Similarity Score
+    cos_score = nlp_engine.compute_cosine_similarity_score(text)
+    click.echo(f"Cosine Similarity Score: {cos_score:.2f}")
+
+    # RAKE Score
+    rake_score = nlp_engine.compute_rake_score(text)
+    click.echo(f"RAKE Score: {rake_score:.2f}")
+
+    # Classifier
+    if classifier.is_model_trained():
+        label, confidence = classifier.predict(text)
+        click.echo(f"Classifier: {'Relevant' if label else 'Not Relevant'} ({confidence:.2f})")
+    else:
+        click.echo("Classifier: Not trained")
+
+    # NER
+    entities = ner_engine.extract_entities(text)
+    click.echo(f"NER Entities: {', '.join(entities) if entities else 'None'}")
+    click.echo(f"NER Score: {ner_engine.compute_ner_score(text):.2f}")
 
 if __name__ == '__main__':
     main()
